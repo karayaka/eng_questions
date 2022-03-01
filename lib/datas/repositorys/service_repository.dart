@@ -8,6 +8,7 @@ import 'package:eng_questions/datas/models/service_models/topic_model.dart';
 import 'package:eng_questions/datas/services/base_service.dart';
 
 class ServiceRepository {
+  BaseResult? glmodel;
   Future<BaseResult> getLevels({int page = 1}) async {
     BaseResult model = (await BaseService.instance!.dioGet<LevelModel>(
         "/QuizerMobil/GetLevel/all/$page/", LevelModel(),
@@ -16,10 +17,11 @@ class ServiceRepository {
   }
 
   Future<BaseResult> getDashbord() async {
-    BaseResult model = await BaseService.instance!.dioGet(
+    glmodel ??= await BaseService.instance!.dioGet(
         "/QuizerMobil/MobilDasbord", DashbordModel(), //dashbord url verilecek
         token: Tools.appToken);
-    return model;
+
+    return glmodel!;
   }
 
   Future<BaseResult> getTopics({int page = 1, int levelID = 0}) async {
