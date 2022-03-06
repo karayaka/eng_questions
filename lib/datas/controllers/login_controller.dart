@@ -16,7 +16,6 @@ class LoginController extends BaseController {
 
   Login() async {
     if (loginKey.currentState!.validate()) {
-      print(userName);
       loading.value = true;
       await NotificationService.showPeriodicallyNotification(
         title: "İngilizce Sorular",

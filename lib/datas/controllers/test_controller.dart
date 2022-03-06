@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:eng_questions/core/component_models/test_list_card_model.dart';
 import 'package:eng_questions/datas/controllers/base_cotrollers/base_controller.dart';
 import 'package:eng_questions/datas/models/service_models/test_model.dart';
 import 'package:eng_questions/datas/services/ad_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:eng_questions/datas/repositorys/local_storage_repository.dart';
 import 'package:eng_questions/datas/repositorys/service_repository.dart';
@@ -27,6 +30,21 @@ class TestController extends BaseController {
     _createInterstitialAd();
   }
 
+  /* _checkAndroidVersione() async {
+    if (Platform.isAndroid) {
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
+      final isAndroidOld = (androidInfo.version.sdkInt ?? 0) < 29; //Android 10
+      var useHybridComposition = remoteConfig.getBool(
+        isAndroidOld
+            ? RemoteConfigKey.useHybridCompositionOlderOS
+            : RemoteConfigKey.useHybridCompositionNewerOS,
+      );
+      if (isAndroidOld && useHybridComposition) {
+        await PlatformViewsService.synchronizeToNativeViewHierarchy(false);
+      }
+    }
+  }*/
+
   @override
   void dispose() async {
     await storage.closeAllBox();
@@ -47,7 +65,7 @@ class TestController extends BaseController {
   createBannerAd() {
     BannerAd bannerAd = BannerAd(
         adUnitId: AdHelper.levelBannerAdUnitId,
-        size: AdSize.banner,
+        size: AdSize.fullBanner,
         request: const AdRequest(),
         listener: BannerAdListener(onAdLoaded: (_) {
           isAdLoaded.value = true;
@@ -91,10 +109,11 @@ class TestController extends BaseController {
 
   Future<void> getTest() async {
     try {
+      _pageID = 1;
       pageLoding.value = true;
       var model = prepareServiceModel<List<TestModel>>(
           await service.getTests(topicID: topicID));
-      if (model != null) {
+      if (model != null && model.isNotEmpty) {
         tests = model;
       }
       pageLoding.value = false;
@@ -113,10 +132,14 @@ class TestController extends BaseController {
       nextPageLoding = true;
       var model = prepareServiceModel<List<TestModel>>(
           await service.getTests(page: _pageID, topicID: topicID));
+
       if (model != null) {
+        pageLoding.value = true;
         tests.addAll(model);
+        nextPageLoding = false;
       }
-      nextPageLoding = false;
+
+      pageLoding.value = false;
       update(["loding"]);
     } catch (e) {
       nextPageLoding = false;

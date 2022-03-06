@@ -90,7 +90,13 @@ class TopicPage extends StatelessWidget {
             ),
             child: ListTile(
               title: Text(topic.topicName ?? ""),
-              subtitle: Text(topic.topicDesc ?? ""),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(topic.topicDesc ?? ""),
+                  Text(topic.levelName ?? ""),
+                ],
+              ),
               trailing: const Icon(
                 Icons.arrow_forward_ios_outlined,
                 color: Colors.black,

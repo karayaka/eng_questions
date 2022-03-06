@@ -45,6 +45,7 @@ class TopicController extends BaseController {
 
   Future<void> getTopics() async {
     try {
+      _pageID = 1;
       pageLoding.value = true;
       var model = prepareServiceModel<List<TopicModel>>(
           await service.getTopics(levelID: levelID));
@@ -67,8 +68,11 @@ class TopicController extends BaseController {
       var model = prepareServiceModel<List<TopicModel>>(
           await service.getTopics(page: _pageID, levelID: levelID));
       nextPageLoding = false;
+
       if (model != null) {
+        pageLoding.value = true;
         topics.addAll(model);
+        pageLoding.value = false;
       }
       update(["loding"]);
     } catch (e) {

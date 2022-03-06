@@ -4,6 +4,8 @@ import 'package:eng_questions/datas/models/service_models/question_model,.dart';
 import 'package:eng_questions/datas/models/storage_models/question_storage_models/question_storage_model.dart';
 import 'package:eng_questions/datas/repositorys/local_storage_repository.dart';
 import 'package:eng_questions/datas/repositorys/service_repository.dart';
+import 'package:eng_questions/datas/services/ad_helper.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:get/get.dart';
 
 class QuestionContoller extends BaseController {
@@ -22,12 +24,16 @@ class QuestionContoller extends BaseController {
   var questionLoding = false.obs;
   var scoreLoding = true.obs;
 
+  var isAdLoaded = false.obs;
+  late BannerAd bannerAd;
+
   @override
   void onReady() {
     super.onReady();
     var arg = Get.arguments;
     _injectParams(arg);
     getQuestion();
+    createBannerAd();
   }
 
   _injectParams(dynamic arg) {
@@ -40,7 +46,6 @@ class QuestionContoller extends BaseController {
     if (arg["lastNumber"] != 0) {
       questionNumber = arg["lastNumber"] + 1;
     }
-    print(questionNumber);
   }
 
   getQuestion() async {
@@ -58,6 +63,19 @@ class QuestionContoller extends BaseController {
       questionLoding.value = false;
       errorMessage(e.toString());
     }
+  }
+
+  createBannerAd() {
+    bannerAd = BannerAd(
+        adUnitId: AdHelper.questionBannerAdUnitId,
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(onAdLoaded: (_) {
+          isAdLoaded.value = true;
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        }));
+    bannerAd.load();
   }
 
   getTestScores() async {
@@ -84,7 +102,6 @@ class QuestionContoller extends BaseController {
         testId: testID,
         userId: 0,
       );
-
       storage.questionAnswer(model);
     } catch (e) {
       errorMessage(e.toString());
@@ -98,5 +115,11 @@ class QuestionContoller extends BaseController {
     } catch (e) {
       errorMessage(e.toString());
     }
+  }
+
+  @override
+  void onClose() {
+    bannerAd.dispose();
+    super.onClose();
   }
 }

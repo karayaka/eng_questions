@@ -131,8 +131,10 @@ class TestPage extends StatelessWidget {
                           _showStartMesage(test, model!.lastQuestionNumber);
                         },
                         subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildListText(test.testDesc),
+                            Text(test.topicName ?? ""),
                             GetBuilder<TestController>(
                                 id: "item${test.id}",
                                 builder: (cntrl) {

@@ -1,4 +1,4 @@
-import 'package:eng_questions/core/component_models/question_stepper_component_model.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:eng_questions/core/components/custom_circular_progress.dart';
 import 'package:eng_questions/core/components/custom_flexible_space_components.dart';
 import 'package:eng_questions/core/components/question_stepper_component.dart';
@@ -159,8 +159,12 @@ class QuestionPage extends StatelessWidget {
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
-            const SizedBox(
-              height: 15,
+            const Divider(
+              height: 2,
+              color: Colors.black,
+            ),
+            Center(
+              child: _buildAdWidget(),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -205,7 +209,7 @@ class QuestionPage extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
         backgroundColor: Colors.white,
@@ -213,6 +217,23 @@ class QuestionPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ));
+  }
+
+  _buildAdWidget() {
+    if (controller.isAdLoaded.value) {
+      print(controller.isAdLoaded.value);
+      return SizedBox(
+        height: controller.bannerAd.size.height.toDouble(),
+        width: controller.bannerAd.size.width.toDouble(),
+        child: AdWidget(
+          ad: controller.bannerAd,
+        ),
+      );
+    } else {
+      return const SizedBox(
+        height: 1,
+      );
+    }
   }
 
   Widget _buildBottomTitle(int ansverID) {

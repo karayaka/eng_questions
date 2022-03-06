@@ -2,6 +2,7 @@ import 'package:eng_questions/datas/controllers/base_cotrollers/base_controller.
 import 'package:eng_questions/datas/repositorys/local_storage_repository.dart';
 import 'package:eng_questions/datas/services/notification_service.dart';
 import 'package:eng_questions/routings/route_const.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -17,6 +18,7 @@ class SplashController extends BaseController {
     await Hive.initFlutter();
     await NotificationService.init();
     await MobileAds.instance.initialize();
+    await PlatformViewsService.synchronizeToNativeViewHierarchy(false);
     tz.initializeTimeZones();
     super.onInit();
   }
