@@ -10,6 +10,7 @@ class TestModel extends BaseServiceModel {
   bool? showTestStartDesc;
   int? testStatus;
   int? adsStatus;
+  //test scores buraya ekelenecek ve o scorun durumuna göre kotrol yapılacak
 
   TestModel(
       {this.id,

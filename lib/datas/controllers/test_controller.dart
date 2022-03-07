@@ -26,8 +26,8 @@ class TestController extends BaseController {
     if (s != null) {
       topicID = s;
     }
+    createBannerAd();
     getTest();
-    _createInterstitialAd();
   }
 
   /* _checkAndroidVersione() async {
@@ -49,6 +49,7 @@ class TestController extends BaseController {
   void dispose() async {
     await storage.closeAllBox();
     interstitialAd?.dispose();
+    bannerAd.dispose();
     super.dispose();
   }
 
@@ -58,14 +59,15 @@ class TestController extends BaseController {
   int _pageID = 1;
   List<TestModel> tests = [];
   var isAdLoaded = false.obs;
+  late BannerAd bannerAd;
 
   InterstitialAd? interstitialAd;
   int interstitialAdError = 0;
 
   createBannerAd() {
-    BannerAd bannerAd = BannerAd(
-        adUnitId: AdHelper.levelBannerAdUnitId,
-        size: AdSize.fullBanner,
+    bannerAd = BannerAd(
+        adUnitId: AdHelper.testBannerAdUnitId,
+        size: AdSize.banner,
         request: const AdRequest(),
         listener: BannerAdListener(onAdLoaded: (_) {
           isAdLoaded.value = true;
@@ -73,7 +75,6 @@ class TestController extends BaseController {
           ad.dispose();
         }));
     bannerAd.load();
-    return bannerAd;
   }
 
   void showIterstitialAd() {

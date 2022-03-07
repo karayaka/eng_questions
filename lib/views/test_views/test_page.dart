@@ -25,6 +25,21 @@ class TestPage extends StatelessWidget {
             title: const Text("Testler"),
             flexibleSpace: const CustomFlexibleSpaceComponent(),
           ),
+          bottomNavigationBar: Obx(() {
+            if (controller.isAdLoaded.value) {
+              return SizedBox(
+                height: controller.bannerAd.size.height.toDouble(),
+                width: controller.bannerAd.size.width.toDouble(),
+                child: AdWidget(
+                  ad: controller.bannerAd,
+                ),
+              );
+            } else {
+              return const SizedBox(
+                height: 8,
+              );
+            }
+          }),
           body: Obx(() {
             if (controller.pageLoding.value) {
               return CustomCircularProgress();
@@ -73,33 +88,9 @@ class TestPage extends StatelessWidget {
           return await controller.getTest();
         },
         child: ListView.separated(
-          separatorBuilder: (_, i) {
-            var bannerAd = controller.createBannerAd();
-            if (i % 5 == 0) {
-              return Obx(() {
-                if (controller.isAdLoaded.value) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: SizedBox(
-                      height: bannerAd.size.height.toDouble(),
-                      width: bannerAd.size.width.toDouble(),
-                      child: AdWidget(
-                        ad: bannerAd,
-                      ),
-                    ),
-                  );
-                } else {
-                  return const SizedBox(
-                    height: 8,
-                  );
-                }
-              });
-            } else {
-              return const SizedBox(
-                height: 8,
-              );
-            }
-          },
+          separatorBuilder: (_, i) => const SizedBox(
+            height: 8,
+          ),
           itemCount: controller.tests.length,
           itemBuilder: (_, i) {
             var test = controller.tests[i];
