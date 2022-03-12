@@ -27,6 +27,7 @@ class TestController extends BaseController {
       topicID = s;
     }
     createBannerAd();
+    _createInterstitialAd();
     getTest();
   }
 
@@ -156,7 +157,7 @@ class TestController extends BaseController {
       retVal.questionCount = model.questionCount ?? 0;
 
       update(["item${model.id}"]);
-      return retVal;
+      model.card = retVal;
     } catch (e) {
       update(["item${model.id}"]);
       errorMessage(e.toString());
@@ -166,7 +167,7 @@ class TestController extends BaseController {
   Future restTest(TestModel model) async {
     try {
       await storage.resetTest(model.id ?? 0);
-      Get.toNamed(RouteConst.questionDetail, arguments: {
+      return Get.toNamed(RouteConst.questionDetail, arguments: {
         "adStatus": model.adsStatus,
         "testID": model.id,
         "lastNumber": 0

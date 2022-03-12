@@ -83,10 +83,10 @@ class QuestionPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _buildOption("A", controller.questionModel.ansverA ?? "", 0),
-          _buildOption("B", controller.questionModel.ansverB ?? "", 1),
-          _buildOption("C", controller.questionModel.ansverC ?? "", 2),
-          _buildOption("D", controller.questionModel.ansverD ?? "", 3),
+          _buildOption("A", controller.questionModel.ansverA ?? "", i: 0),
+          _buildOption("B", controller.questionModel.ansverB ?? "", i: 1),
+          _buildOption("C", controller.questionModel.ansverC ?? "", i: 2),
+          _buildOption("D", controller.questionModel.ansverD ?? "", i: 3),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -104,7 +104,7 @@ class QuestionPage extends StatelessWidget {
     );
   }
 
-  Widget _buildOption(String option, String optionText, int i) {
+  Widget _buildOption(String option, String optionText, {int i = -2}) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
@@ -123,12 +123,15 @@ class QuestionPage extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             onTap: () {
-              _checkCorreckResult(i);
+              if (i != -2) {
+                _checkCorreckResult(i);
+              }
             },
           )),
     );
   }
 
+// doğru vevap bottum sheette gösterilmeli mi
   _checkCorreckResult(int index) {
     if (index == -1) {
       _showAnswerSheet(-1);
@@ -149,6 +152,12 @@ class QuestionPage extends StatelessWidget {
         Wrap(
           children: [
             Center(child: _buildBottomTitle(ansverID)),
+            const SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: _buildshowedOptions(),
+            ),
             const SizedBox(
               height: 15,
             ),
@@ -217,6 +226,28 @@ class QuestionPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ));
+  }
+
+  Widget _buildshowedOptions() {
+    int ansver = controller.questionModel.correctAnswer ?? 0;
+    if (ansver == 0) {
+      return _buildOption(
+        "A",
+        controller.questionModel.ansverA ?? "",
+      );
+    } else if (ansver == 1) {
+      return _buildOption(
+        "B",
+        controller.questionModel.ansverB ?? "",
+      );
+    } else if (ansver == 2) {
+      return _buildOption(
+        "C",
+        controller.questionModel.ansverC ?? "",
+      );
+    } else {
+      return _buildOption("D", controller.questionModel.ansverD ?? "");
+    }
   }
 
   _buildAdWidget() {

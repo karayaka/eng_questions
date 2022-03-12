@@ -1,3 +1,4 @@
+import 'package:eng_questions/core/component_models/test_list_card_model.dart';
 import 'package:eng_questions/datas/models/base_models/base_service_model.dart';
 
 class TestModel extends BaseServiceModel {
@@ -10,6 +11,7 @@ class TestModel extends BaseServiceModel {
   bool? showTestStartDesc;
   int? testStatus;
   int? adsStatus;
+  TestListCardModel? card;
   //test scores buraya ekelenecek ve o scorun durumuna göre kotrol yapılacak
 
   TestModel(

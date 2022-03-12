@@ -41,6 +41,16 @@ class AdHelper {
     }
   }
 
+  static String get homeBannerAdUnitId {
+    if (Platform.isAndroid) {
+      return 'ca-app-pub-1229600046040111/4159752614';
+    } else if (Platform.isIOS) {
+      return 'ca-app-pub-1229600046040111/8614120489';
+    } else {
+      throw UnsupportedError("unsupported platform");
+    }
+  }
+
   static String get questionInterstitialAdUnitId {
     if (Platform.isAndroid) {
       return 'ca-app-pub-1229600046040111/2265406388';

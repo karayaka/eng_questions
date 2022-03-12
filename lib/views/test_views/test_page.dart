@@ -94,12 +94,9 @@ class TestPage extends StatelessWidget {
           itemCount: controller.tests.length,
           itemBuilder: (_, i) {
             var test = controller.tests[i];
-            TestListCardModel? model;
-            controller.getTestScores(test).then((retVal) {
-              if (retVal != null) {
-                model = retVal;
-              }
-            });
+            if (test.card == null) {
+              controller.getTestScores(test);
+            }
             return Slidable(
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
@@ -119,7 +116,7 @@ class TestPage extends StatelessWidget {
                       child: ListTile(
                         title: Text(test.testName ?? ""),
                         onTap: () {
-                          _showStartMesage(test, model!.lastQuestionNumber);
+                          _showStartMesage(test, test.card!.lastQuestionNumber);
                         },
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +127,7 @@ class TestPage extends StatelessWidget {
                                 id: "item${test.id}",
                                 builder: (cntrl) {
                                   return TestListCardComponent(
-                                    model: model,
+                                    model: test.card,
                                   );
                                 }),
                           ],
@@ -175,17 +172,15 @@ class TestPage extends StatelessWidget {
   }
 
   _toRoute(TestModel model, int lastNumber) {
-    print(model.adsStatus);
     if (model.adsStatus != 0) {
       controller.showIterstitialAd();
     }
-
     Get.toNamed(RouteConst.questionDetail, arguments: {
       "adStatus": model.adsStatus,
       "testID": model.id,
       "lastNumber": lastNumber
     })?.then((value) {
-      controller.getTest();
+      controller.getTestScores(model);
     });
   }
 
@@ -193,7 +188,9 @@ class TestPage extends StatelessWidget {
     return [
       SlidableAction(
         onPressed: (context) {
-          controller.restTest(test);
+          controller.restTest(test).then((value) {
+            controller.getTestScores(test);
+          });
         },
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,

@@ -5,7 +5,7 @@ import 'package:eng_questions/core/components/home_card_component.dart';
 import 'package:eng_questions/core/components/welcome_message_component.dart';
 import 'package:eng_questions/datas/controllers/home_controller.dart';
 import 'package:eng_questions/datas/models/service_models/dashbord_model.dart';
-import 'package:eng_questions/datas/services/notification_service.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:eng_questions/routings/route_const.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,12 +29,22 @@ class Home extends StatelessWidget {
                 );
               })),
         ),
-        /*floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            NotificationService.showNotification(title: "Deneme", body: "Body");
-          },
-          child: const Icon(Icons.add),
-        ),*/
+        bottomNavigationBar: Obx(() {
+          if (controller.isAdLoaded.value) {
+            print(controller.isAdLoaded.value);
+            return Container(
+              height: controller.bannerAd.size.height.toDouble(),
+              width: controller.bannerAd.size.width.toDouble(),
+              child: AdWidget(
+                ad: controller.bannerAd,
+              ),
+            );
+          } else {
+            return const SizedBox(
+              height: 8,
+            );
+          }
+        }),
         body: Container(
           decoration: BoxDecoration(color: Colors.grey.shade200),
           child: ListView(

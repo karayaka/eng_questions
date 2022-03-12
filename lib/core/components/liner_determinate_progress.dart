@@ -17,11 +17,11 @@ class LinerDeterminateProgress extends StatefulWidget {
 class _LinerDeterminateProgressState extends State<LinerDeterminateProgress>
     with TickerProviderStateMixin {
   late AnimationController controller;
-
   double progressAnime = 0.00;
 
   @override
   void initState() {
+    progressAnime = 0.00;
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
