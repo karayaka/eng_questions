@@ -5,6 +5,9 @@ import 'package:eng_questions/datas/models/storage_models/question_storage_model
 import 'package:eng_questions/datas/repositorys/local_storage_repository.dart';
 import 'package:eng_questions/datas/repositorys/service_repository.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import '../services/ad_helper.dart';
 
 class QuestionContoller extends BaseController {
   late ServiceRepository service;
@@ -21,6 +24,8 @@ class QuestionContoller extends BaseController {
   var testScore = QuestionStepperComponentModel();
   var questionLoding = false.obs;
   var scoreLoding = true.obs;
+  var isAdLoaded = false.obs;
+  late BannerAd bannerAd;
 
   @override
   void onReady() {
@@ -28,6 +33,7 @@ class QuestionContoller extends BaseController {
     var arg = Get.arguments;
     _injectParams(arg);
     getQuestion();
+    createBannerAd();
   }
 
   _injectParams(dynamic arg) {
@@ -40,7 +46,21 @@ class QuestionContoller extends BaseController {
     if (arg["lastNumber"] != 0) {
       questionNumber = arg["lastNumber"] + 1;
     }
-    print(questionNumber);
+  }
+
+
+
+  createBannerAd() {
+    bannerAd = BannerAd(
+        adUnitId: AdHelper.questionBannerAdUnitId,
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(onAdLoaded: (_) {
+          isAdLoaded.value = true;
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        }));
+    bannerAd.load();
   }
 
   getQuestion() async {

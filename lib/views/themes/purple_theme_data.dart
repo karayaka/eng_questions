@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 final ThemeData PurpleThemeData = ThemeData(
   primarySwatch: const MaterialColor(4285739174,{50: const Color( 0xfff3ebf9 )
     , 100: const Color( 0xffe7d7f4 )
@@ -282,4 +282,4 @@ final ThemeData PurpleThemeData = ThemeData(
       )
 
   ),
-);
+);*/

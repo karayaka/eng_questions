@@ -25,6 +25,22 @@ class TestPage extends StatelessWidget {
             title: const Text("Testler"),
             flexibleSpace: const CustomFlexibleSpaceComponent(),
           ),
+          bottomNavigationBar: Obx(() {
+            if (controller.isBannerAdLoaded.value) {
+              print(controller.isBannerAdLoaded.value);
+              return Container(
+                height: controller.bannerAd.size.height.toDouble(),
+                width: controller.bannerAd.size.width.toDouble(),
+                child: AdWidget(
+                  ad: controller.bannerAd,
+                ),
+              );
+            } else {
+              return const SizedBox(
+                height: 8,
+              );
+            }
+          }),
           body: Obx(() {
             if (controller.pageLoding.value) {
               return CustomCircularProgress();
@@ -32,7 +48,8 @@ class TestPage extends StatelessWidget {
               return _buildListView();
             }
           }),
-        ));
+        )
+    );
   }
 
   Widget _buildListView() {
@@ -72,34 +89,7 @@ class TestPage extends StatelessWidget {
         onRefresh: () async {
           return await controller.getTest();
         },
-        child: ListView.separated(
-          separatorBuilder: (_, i) {
-            var bannerAd = controller.createBannerAd();
-            if (i % 5 == 0) {
-              return Obx(() {
-                if (controller.isAdLoaded.value) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: SizedBox(
-                      height: bannerAd.size.height.toDouble(),
-                      width: bannerAd.size.width.toDouble(),
-                      child: AdWidget(
-                        ad: bannerAd,
-                      ),
-                    ),
-                  );
-                } else {
-                  return const SizedBox(
-                    height: 8,
-                  );
-                }
-              });
-            } else {
-              return const SizedBox(
-                height: 8,
-              );
-            }
-          },
+        child: ListView.builder(
           itemCount: controller.tests.length,
           itemBuilder: (_, i) {
             var test = controller.tests[i];
@@ -109,46 +99,51 @@ class TestPage extends StatelessWidget {
                 model = retVal;
               }
             });
-            return Slidable(
-              endActionPane: ActionPane(
-                motion: const ScrollMotion(),
-                children: _buildActions(test),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: (i % 2 == 0)
-                      ? Colors.purple.shade50
-                      : Colors.grey.shade200,
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Slidable(
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: _buildActions(test),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 12,
-                      child: ListTile(
-                        title: Text(test.testName ?? ""),
-                        onTap: () {
-                          _showStartMesage(test, model!.lastQuestionNumber);
-                        },
-                        subtitle: Column(
-                          children: [
-                            _buildListText(test.testDesc),
-                            GetBuilder<TestController>(
-                                id: "item${test.id}",
-                                builder: (cntrl) {
-                                  return TestListCardComponent(
-                                    model: model,
-                                  );
-                                }),
-                          ],
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: (i % 2 == 0)
+                        ? Colors.purple.shade50
+                        : Colors.grey.shade200,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 12,
+                        child: ListTile(
+                          title: Text(test.testName ?? ""),
+
+                          onTap: () {
+                            _showStartMesage(test, model!.lastQuestionNumber);
+                          },
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildListText(test.testDesc),
+                              GetBuilder<TestController>(
+                                  id: "item${test.id}",
+                                  builder: (cntrl) {
+                                    return TestListCardComponent(
+                                      model: model,
+                                    );
+                                  }),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const Expanded(
-                      flex: 1,
-                      child: Icon(Icons.arrow_forward_ios_outlined),
-                    )
-                  ],
+                      const Expanded(
+                        flex: 1,
+                        child: Icon(Icons.arrow_forward_ios_outlined),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );
@@ -182,7 +177,6 @@ class TestPage extends StatelessWidget {
   }
 
   _toRoute(TestModel model, int lastNumber) {
-    print(model.adsStatus);
     if (model.adsStatus != 0) {
       controller.showIterstitialAd();
     }

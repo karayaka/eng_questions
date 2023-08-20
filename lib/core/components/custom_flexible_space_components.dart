@@ -12,7 +12,7 @@ class CustomFlexibleSpaceComponent extends StatelessWidget {
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
               colors: [
-            Get.theme.primaryColorDark,
+            Colors.purple,
             Colors.deepOrange,
           ])),
     );

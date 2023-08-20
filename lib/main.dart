@@ -1,7 +1,6 @@
 import 'package:eng_questions/bindings/initial_binding.dart';
 import 'package:eng_questions/routings/route_const.dart';
 import 'package:eng_questions/routings/route_pages.dart';
-import 'package:eng_questions/views/themes/purple_theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
@@ -15,8 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: InitialBindigs(),
+      //color: Colors.purple,
       title: 'İngilizce Sorular',
-      theme: PurpleThemeData,
+      //theme: PurpleThemeData,
       getPages: RoutePages.pages,
       initialRoute: RouteConst.splash,
     );

@@ -25,6 +25,7 @@ class TestController extends BaseController {
     }
     getTest();
     _createInterstitialAd();
+    createBannerAd();
   }
 
   @override
@@ -39,24 +40,25 @@ class TestController extends BaseController {
   int topicID = 0;
   int _pageID = 1;
   List<TestModel> tests = [];
-  var isAdLoaded = false.obs;
-
-  InterstitialAd? interstitialAd;
-  int interstitialAdError = 0;
+  var isBannerAdLoaded = false.obs;
+  late BannerAd bannerAd;
 
   createBannerAd() {
-    BannerAd bannerAd = BannerAd(
-        adUnitId: AdHelper.levelBannerAdUnitId,
+    bannerAd = BannerAd(
+        adUnitId: AdHelper.testBannerAdUnitId,
         size: AdSize.banner,
         request: const AdRequest(),
         listener: BannerAdListener(onAdLoaded: (_) {
-          isAdLoaded.value = true;
+          isBannerAdLoaded.value = true;
         }, onAdFailedToLoad: (ad, error) {
           ad.dispose();
         }));
     bannerAd.load();
-    return bannerAd;
   }
+
+  InterstitialAd? interstitialAd;
+  int interstitialAdError = 0;
+
 
   void showIterstitialAd() {
     if (interstitialAd != null) {

@@ -43,21 +43,47 @@ class TestListCardComponent extends StatelessWidget {
           height: 3,
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Chip(
-            label: Text("Soru ${model!.questionCount}"),
-            backgroundColor: Colors.blueGrey,
+          Container(
+            decoration:BoxDecoration(
+              color: Colors.blueGrey,
+              borderRadius: BorderRadius.circular(12)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text("Soru ${model!.questionCount}",style: TextStyle(color: Colors.white),),
+            ),
           ),
-          Chip(
-            label: Text("Doğru ${model!.correctAnswerCount}"),
-            backgroundColor: Colors.greenAccent,
+          Container(
+            decoration:BoxDecoration(
+                color: Colors.greenAccent,
+                borderRadius: BorderRadius.circular(12)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text("Doğru ${model!.correctAnswerCount}",),
+            ),
           ),
-          Chip(
-            label: Text("Yanlış ${model!.wrongAnswerCount}"),
-            backgroundColor: Colors.red,
+          Container(
+            padding: EdgeInsets.only(left: 3),
+            decoration:BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(12)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text("Yanlış ${model!.wrongAnswerCount}"),
+            ),
           ),
-          Chip(
-            label: Text("Boş ${model!.emtyAnverCount}"),
-            backgroundColor: Colors.orangeAccent,
+          Container(
+            padding: EdgeInsets.only(left: 3),
+            decoration:BoxDecoration(
+                color: Colors.orangeAccent,
+                borderRadius: BorderRadius.circular(12)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text("Boş ${model!.emtyAnverCount}"),
+            ),
           ),
         ])
       ],

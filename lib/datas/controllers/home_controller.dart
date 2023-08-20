@@ -4,7 +4,9 @@ import 'package:eng_questions/datas/models/service_models/dashbord_model.dart';
 import 'package:eng_questions/datas/models/storage_models/user_storage_models/user_storage_model.dart';
 import 'package:eng_questions/datas/repositorys/local_storage_repository.dart';
 import 'package:eng_questions/datas/repositorys/service_repository.dart';
+import 'package:eng_questions/datas/services/ad_helper.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeController extends BaseController {
   late ServiceRepository service;
@@ -15,7 +17,9 @@ class HomeController extends BaseController {
     super.onReady();
     getDashbord();
     getDastbortChart();
+    createBannerAd();
   }
+
 
   var user = UserStorageModel().obs;
   var dashbord = DashbordModel();
@@ -24,6 +28,21 @@ class HomeController extends BaseController {
   var isLoading = true.obs;
 
   var chartsLoding = false.obs;
+  var isAdLoaded = false.obs;
+  late BannerAd bannerAd;
+
+  createBannerAd() {
+    bannerAd = BannerAd(
+        adUnitId: AdHelper.homeBannerAdUnitId,
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(onAdLoaded: (_) {
+          isAdLoaded.value = true;
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        }));
+    bannerAd.load();
+  }
 
   HomeController({
     required this.service,

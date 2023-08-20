@@ -19,6 +19,7 @@ class ServiceRepository {
     BaseResult model = await BaseService.instance!.dioGet(
         "/QuizerMobil/MobilDasbord", DashbordModel(), //dashbord url verilecek
         token: Tools.appToken);
+
     return model;
   }
 

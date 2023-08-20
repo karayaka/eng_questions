@@ -1,8 +1,8 @@
-import 'package:eng_questions/core/component_models/question_stepper_component_model.dart';
 import 'package:eng_questions/core/components/custom_circular_progress.dart';
 import 'package:eng_questions/core/components/custom_flexible_space_components.dart';
 import 'package:eng_questions/core/components/question_stepper_component.dart';
 import 'package:eng_questions/datas/controllers/question_controller.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -203,8 +203,28 @@ class QuestionPage extends StatelessWidget {
                       },
                     ),
                   ),
+
                 ],
               ),
+            ),
+
+            Center(
+              child: Obx(() {
+                if (controller.isAdLoaded.value) {
+                  print(controller.isAdLoaded.value);
+                  return Container(
+                    height: controller.bannerAd.size.height.toDouble(),
+                    width: controller.bannerAd.size.width.toDouble(),
+                    child: AdWidget(
+                      ad: controller.bannerAd,
+                    ),
+                  );
+                } else {
+                  return const SizedBox(
+                    height: 8,
+                  );
+                }
+              }),
             )
           ],
         ),
