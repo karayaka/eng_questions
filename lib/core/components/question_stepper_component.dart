@@ -26,10 +26,12 @@ class QuestionStepperComponent extends StatelessWidget {
             Chip(
               label: Text("Soru: ${model!.questionCount}"),
               backgroundColor: Colors.blueGrey,
+
             ),
             Chip(
               label: Text("Doğru: ${model!.correctAnsverCount}"),
               backgroundColor: Colors.greenAccent,
+              shadowColor: Colors.greenAccent,
             ),
             Chip(
               label: Text("Boş: ${model!.passAnsverQuestion}"),
