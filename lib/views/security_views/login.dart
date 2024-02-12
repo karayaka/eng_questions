@@ -78,7 +78,7 @@ class Login extends StatelessWidget {
                               } else {
                                 return ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    primary: Get.theme.primaryColor,
+                                    backgroundColor: Get.theme.primaryColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(20)),

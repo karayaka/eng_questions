@@ -170,7 +170,7 @@ class QuestionPage extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
+                        backgroundColor: Colors.red,
                       ),
                       child: const Text("Çıkış"),
                       onPressed: () {
