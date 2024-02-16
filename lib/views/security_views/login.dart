@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
   var cntrl = Get.find<LoginController>();
-
   Login({Key? key}) : super(key: key);
 
   @override
@@ -81,8 +80,7 @@ class Login extends StatelessWidget {
                                     backgroundColor: Get.theme.primaryColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(20)),
-                                  ),
+                                            BorderRadius.circular(20)),                                  ),
                                   child: const Text(
                                     "Başla",
                                     style: TextStyle(color: Colors.white),

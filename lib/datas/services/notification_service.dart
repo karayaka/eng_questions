@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
@@ -17,22 +16,16 @@ class NotificationService {
 
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    const IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
+
     await _notification
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     const InitializationSettings initializationSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    _notification.initialize(initializationSettings,
-        onSelectNotification: (String? payload) {});
+            android: initializationSettingsAndroid);
+    _notification.initialize(initializationSettings);
+        //onSelectNotification: (String? payload) {});
   }
 
   static Future showNotification(
@@ -104,16 +97,6 @@ class NotificationService {
     }
 
   }*/
-  static tz.TZDateTime _scheduleDaily(Time time) {
-    print("Planlandı");
-    final now = tz.TZDateTime.from(DateTime.now(), tz.local);
-    final scheduleDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
-        time.hour, time.minute, time.second);
-    var result = scheduleDate.isBefore(now)
-        ? scheduleDate.add(const Duration(days: 1))
-        : scheduleDate;
-    return result;
-  }
 
   static _notificationDetail() {
     return const NotificationDetails(
@@ -123,7 +106,7 @@ class NotificationService {
         importance: Importance.max,
         playSound: true,
       ),
-      iOS: IOSNotificationDetails(),
+      //iOS: IOSNotificationDetails(),
     );
   }
 }
