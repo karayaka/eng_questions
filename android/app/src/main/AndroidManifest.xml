@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cagnaz.eng_questions">
+    package="com.cagnaz.eng_question">
    <application
         android:label="İngilizce Sorular"
         android:name="${applicationName}"

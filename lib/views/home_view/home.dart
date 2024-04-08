@@ -120,6 +120,9 @@ class Home extends StatelessWidget {
           color: Colors.blueGrey,
           title: "Soru Sayısı",
           count: "${model.quetionCount}",
+          onTab: () {
+            Get.toNamed(RouteConst.tests);
+          },
         ),
       ],
     );

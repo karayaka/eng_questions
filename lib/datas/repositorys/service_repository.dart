@@ -42,7 +42,6 @@ class ServiceRepository {
     BaseResult model = (await BaseService.instance!.dioGet<QuestionModel>(
         "/QuizerMobil/GetQuestion/$testID/$questionNumber", QuestionModel(),
         token: Tools.appToken));
-    print(model);
     return model;
   }
 }
